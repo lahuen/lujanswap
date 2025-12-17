@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: medusa-marketplace-backend
+    env: docker
+    plan: free
+    rootDir: backend/lujan-store
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MEDUSA_ADMIN_ONBOARDING_TYPE
+        value: nextjs
+      - key: DISABLE_ADMIN
+        value: true
+      - key: JWT_SECRET
+        generateValue: true
+      - key: COOKIE_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: STORE_CORS
+        sync: false
+      - key: ADMIN_CORS
+        sync: false
+      - key: AUTH_CORS
+        sync: false

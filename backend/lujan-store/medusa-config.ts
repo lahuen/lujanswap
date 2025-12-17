@@ -4,7 +4,8 @@ loadEnv(process.env.NODE_ENV || 'development', process.cwd())
 
 module.exports = defineConfig({
   projectConfig: {
-
+    // @ts-ignore
+    admin: process.env.DISABLE_ADMIN === 'true' ? { disable: true } : undefined,
     databaseUrl: process.env.DATABASE_URL,
     // Ensure SSL for both Medusa v1 and v2
     // @ts-ignore
