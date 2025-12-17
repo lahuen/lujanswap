@@ -11,6 +11,10 @@ services:
         value: nextjs
       - key: DISABLE_ADMIN
         value: true
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 9000
       - key: JWT_SECRET
         generateValue: true
       - key: COOKIE_SECRET
