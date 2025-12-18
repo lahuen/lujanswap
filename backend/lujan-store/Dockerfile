@@ -16,7 +16,7 @@ RUN if [ -f yarn.lock ]; then yarn install --frozen-lockfile; else npm ci; fi
 COPY . .
 
 # Build the application (skip admin build)
-RUN MEDUSA_DISABLE_ADMIN=true bash -c "if [ -f yarn.lock ]; then yarn build; else npm run build; fi"
+RUN MEDUSA_DISABLE_ADMIN=true sh -c "if [ -f yarn.lock ]; then yarn build; else npm run build; fi"
 
 # Create admin placeholder in all possible locations
 RUN mkdir -p .medusa/admin dist/admin build/admin && \
