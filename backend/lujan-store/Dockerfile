@@ -28,6 +28,10 @@ RUN mkdir -p .medusa/admin dist/admin build/admin && \
 
 EXPOSE 9000
 
+# Ensure Medusa listens on all interfaces (required for Docker/Render)
+ENV HOST=0.0.0.0
+ENV PORT=9000
+
 
 # Start the application (migrations will run automatically on first start)
 CMD ["sh", "-c", "mkdir -p .medusa/admin && echo '<!DOCTYPE html><html><head><title>Admin</title></head><body><h1>Admin Panel</h1></body></html>' > .medusa/admin/index.html && npx medusa db:migrate && npx medusa start"]
