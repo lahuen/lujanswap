@@ -34,5 +34,5 @@ ENV PORT=9000
 
 
 # Start the application (migrations will run automatically on first start)
-CMD ["sh", "-c", "mkdir -p .medusa/admin && echo '<!DOCTYPE html><html><head><title>Admin</title></head><body><h1>Admin Panel</h1></body></html>' > .medusa/admin/index.html && npx medusa db:migrate && npx medusa start"]
+CMD ["sh", "-c", "mkdir -p .medusa/admin && echo '<!DOCTYPE html><html><head><title>Admin</title></head><body><h1>Admin Panel</h1></body></html>' > .medusa/admin/index.html && export HOST=0.0.0.0 && export PORT=${PORT:-9000} && npx medusa db:migrate && npx medusa start"]
 
