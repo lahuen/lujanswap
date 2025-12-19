@@ -12,6 +12,9 @@ COPY yarn.lock* ./
 # Install dependencies
 RUN if [ -f yarn.lock ]; then yarn install --frozen-lockfile; else npm ci; fi
 
+# Remove admin files from modules to prevent admin loading errors
+RUN rm -rf node_modules/@medusajs/draft-order/.medusa/server/src/admin || true
+
 # Copy application code
 COPY . .
 
@@ -34,5 +37,5 @@ ENV PORT=9000
 
 
 # Start the application (migrations will run automatically on first start)
-CMD ["sh", "-c", "mkdir -p .medusa/admin && echo '<!DOCTYPE html><html><head><title>Admin</title></head><body><h1>Admin Panel</h1></body></html>' > .medusa/admin/index.html && export HOST=0.0.0.0 && export PORT=${PORT:-9000} && npx medusa db:migrate && npx medusa start"]
+CMD ["sh", "-c", "mkdir -p .medusa/admin && echo '<!DOCTYPE html><html><head><title>Admin</title></head><body><h1>Admin Panel</h1></body></html>' > .medusa/admin/index.html && export HOST=0.0.0.0 && export PORT=${PORT:-9000} && export MEDUSA_ADMIN_ONBOARDING_TYPE=skip && npx medusa db:migrate && npx medusa start"]
 
