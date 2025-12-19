@@ -7,6 +7,7 @@ module.exports = defineConfig({
     // @ts-ignore
     admin: process.env.DISABLE_ADMIN === 'true' ? { disable: true } : undefined,
     databaseUrl: process.env.DATABASE_URL,
+    redisUrl: process.env.REDIS_URL,
     // Ensure SSL for both Medusa v1 and v2
     // @ts-ignore
     database_extra: process.env.NODE_ENV !== "development" ? { ssl: { rejectUnauthorized: false } } : undefined,

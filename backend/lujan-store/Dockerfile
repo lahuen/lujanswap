@@ -24,6 +24,6 @@ ENV HOST=0.0.0.0
 ENV PORT=9000
 
 # Start the application (migrations run on start)
-CMD ["sh", "-c", "npx medusa db:migrate && npx medusa start"]
+CMD ["sh", "-c", "echo 'Starting Medusa...' && npx medusa db:migrate && npx medusa start --host 0.0.0.0 --port 9000"]
 
 # Force redeploy
