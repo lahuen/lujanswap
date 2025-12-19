@@ -29,17 +29,15 @@ module.exports = defineConfig({
   modules: {
     [Modules.STOCK_LOCATION]: true,
     [Modules.SALES_CHANNEL]: true,
-    [Modules.CACHE]: {
-      resolve: "@medusajs/medusa/cache-redis",
-      options: {
-        redisUrl: process.env.REDIS_URL,
+    ...(process.env.REDIS_URL ? {
+      [Modules.CACHE]: {
+        resolve: "@medusajs/medusa/cache-redis",
+        options: { redisUrl: process.env.REDIS_URL },
       },
-    },
-    [Modules.EVENT_BUS]: {
-      resolve: "@medusajs/medusa/event-bus-redis",
-      options: {
-        redisUrl: process.env.REDIS_URL,
+      [Modules.EVENT_BUS]: {
+        resolve: "@medusajs/medusa/event-bus-redis",
+        options: { redisUrl: process.env.REDIS_URL },
       },
-    },
+    } : {}),
   }
 })
