@@ -18,6 +18,9 @@ COPY . .
 # Build the application
 RUN MEDUSA_ADMIN_DISABLED=true sh -c "if [ -f yarn.lock ]; then yarn build; else npm run build; fi"
 
+# Failsafe: Create admin placeholder even if build skipped UI
+RUN mkdir -p .medusa/admin && echo '<!DOCTYPE html><html><body>Admin Disabled</body></html>' > .medusa/admin/index.html
+
 EXPOSE 9000
 
 ENV HOST=0.0.0.0

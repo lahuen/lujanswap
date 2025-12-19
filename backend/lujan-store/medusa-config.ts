@@ -2,10 +2,10 @@ import { loadEnv, defineConfig, Modules } from '@medusajs/framework/utils'
 
 loadEnv(process.env.NODE_ENV || 'development', process.cwd())
 
+const adminDisabled = process.env.DISABLE_ADMIN === 'true' || process.env.MEDUSA_ADMIN_DISABLED === 'true'
+
 module.exports = defineConfig({
   projectConfig: {
-    // @ts-ignore
-    admin: process.env.DISABLE_ADMIN === 'true' ? { disable: true } : undefined,
     databaseUrl: process.env.DATABASE_URL,
     redisUrl: process.env.REDIS_URL,
     // Ensure SSL for both Medusa v1 and v2
@@ -26,6 +26,9 @@ module.exports = defineConfig({
       jwtSecret: process.env.JWT_SECRET || "supersecret",
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
     }
+  },
+  admin: {
+    disable: adminDisabled,
   },
   modules: {
     [Modules.STOCK_LOCATION]: true,
