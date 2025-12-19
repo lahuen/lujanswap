@@ -12,14 +12,11 @@ COPY yarn.lock* ./
 # Install dependencies
 RUN if [ -f yarn.lock ]; then yarn install --frozen-lockfile; else npm ci; fi
 
-# Remove admin files from modules to prevent admin loading errors
-RUN rm -rf node_modules/@medusajs/draft-order/.medusa/server/src/admin || true
-
 # Copy application code
 COPY . .
 
-# Build the application (skip admin build)
-RUN MEDUSA_DISABLE_ADMIN=true sh -c "if [ -f yarn.lock ]; then yarn build; else npm run build; fi"
+# Build the application
+RUN if [ -f yarn.lock ]; then yarn build; else npm run build; fi
 
 # Create admin placeholder in all possible locations
 RUN mkdir -p .medusa/admin dist/admin build/admin && \
