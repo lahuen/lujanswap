@@ -11,6 +11,8 @@ services:
         value: nextjs
       - key: DISABLE_ADMIN
         value: true
+      - key: MEDUSA_ADMIN_DISABLED
+        value: true
       - key: HOST
         value: 0.0.0.0
       - key: PORT

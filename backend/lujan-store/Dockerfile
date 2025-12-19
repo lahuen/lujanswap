@@ -15,8 +15,8 @@ RUN if [ -f yarn.lock ]; then yarn install --frozen-lockfile; else npm ci; fi
 # Copy application code
 COPY . .
 
-# Build the backend only
-RUN if [ -f yarn.lock ]; then yarn build --backend; else npm run build -- --backend; fi
+# Build the application
+RUN MEDUSA_ADMIN_DISABLED=true sh -c "if [ -f yarn.lock ]; then yarn build; else npm run build; fi"
 
 EXPOSE 9000
 
