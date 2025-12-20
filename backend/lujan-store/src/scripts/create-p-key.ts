@@ -12,25 +12,44 @@ export default async function seedStorefrontRequirements({ container }: ExecArgs
   logger.info("Checking storefront requirements...")
 
   try {
-    // 1. Ensure/Create Publishable Key
+    // 1. Ensure Sales Channel
+    const { data: channels } = await query.graph({
+      entity: "sales_channel",
+      fields: ["id", "name"],
+      filters: { name: "Default Sales Channel" }
+    })
+
+    let channelId = channels[0]?.id
+    if (channels.length === 0) {
+      const { result: newChannel } = await container.resolve("salesChannelModuleService").createSalesChannels([{ name: "Default Sales Channel" }])
+      channelId = newChannel.id
+      logger.info("Default Sales Channel created.")
+    }
+
+    // 2. Ensure/Create Publishable Key and link to Sales Channel
     const { data: keys } = await query.graph({
       entity: "api_key",
-      fields: ["token", "title"],
+      fields: ["id", "token", "title"],
       filters: { title: "Storefront Key" }
     })
 
+    let pkId = keys[0]?.id
     if (keys.length === 0) {
       const { result } = await createApiKeysWorkflow(container).run({
         input: {
           api_keys: [{ title: "Storefront Key", type: ApiKeyType.PUBLISHABLE, created_by: "system" }],
         },
       })
-      logger.info(`TOKEN CREATED: ${result[0].token}`)
-    } else {
-      logger.info(`TOKEN EXISTS: ${keys[0].token}`)
+      const newKey = result[0]
+      pkId = newKey.id
+      logger.info(`TOKEN CREATED: ${newKey.token}`)
+
+      // Link to Sales Channel
+      await container.resolve("api_key_module_service").linkSalesChannels(newKey.id, [channelId])
+      logger.info("Linked Key to Sales Channel.")
     }
 
-    // 2. Ensure/Create default Region (Argentina)
+    // 3. Ensure Region and link to Sales Channel
     const { data: regions } = await query.graph({
       entity: "region",
       fields: ["id", "name"]
@@ -50,8 +69,6 @@ export default async function seedStorefrontRequirements({ container }: ExecArgs
         },
       })
       logger.info("Default Region (Argentina) created.")
-    } else {
-      logger.info("Region already exists.")
     }
 
     console.log("*****************************************")
