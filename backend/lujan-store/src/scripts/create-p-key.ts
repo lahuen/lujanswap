@@ -23,10 +23,10 @@ export default async function createPublishableKey({ container }: ExecArgs) {
     })
 
     const key = result[0]
-    console.log("--- KEY_START ---")
-    console.log(`TITLE: ${key.title}`)
-    console.log(`TOKEN: ${key.token}`)
-    console.log("--- KEY_END ---")
+    console.log("*****************************************")
+    console.log("      LUJAN MARKETPLACE STOREFRONT KEY   ")
+    console.log(`      TOKEN: ${key.token}`)
+    console.log("*****************************************")
 
     logger.info("Publishable key created successfully.")
   } catch (error) {
