@@ -27,6 +27,7 @@ ENV HOST=0.0.0.0
 ENV PORT=9000
 
 # Start the application (migrations run on start)
-CMD ["sh", "-c", "echo 'Starting Medusa...' && npx medusa db:migrate && npx medusa start --host 0.0.0.0 --port 9000"]
+# Start the application (create key if missing and start)
+CMD ["sh", "-c", "npx medusa db:migrate && (npx medusa publishable-key create --name storefront || true) && echo '--- PUBLISHABLE KEYS START ---' && npx medusa publishable-key list && echo '--- PUBLISHABLE KEYS END ---' && npx medusa start --host 0.0.0.0 --port 9000"]
 
 # Force redeploy
