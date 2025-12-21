@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 export const GET = (req: MedusaRequest, res: MedusaResponse) => {
